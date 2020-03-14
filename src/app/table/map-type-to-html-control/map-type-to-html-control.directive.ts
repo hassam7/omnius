@@ -11,6 +11,16 @@ export class MapTypeToHtmlControlDirective implements OnInit {
   }
 
   ngOnInit() {
+    this.mapDataToType(this.data);
+  }
+
+  private mapDataToType(data: any) {
+    if (typeof data === 'string') {
+      this.el.innerText = data;
+    } else if(typeof data === 'boolean') {
+      const isChecked = !!data;
+      this.el.innerHTML = `<input type="checkbox" ${isChecked ? 'checked' : '' }>`;
+    }
   }
 
 }
