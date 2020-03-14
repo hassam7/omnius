@@ -13,3 +13,13 @@
     fill: #2593FC;
   }
 }
+
+.filter {
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+
+  &:hover {
+    color: #252525
+  }
+}
