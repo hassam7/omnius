@@ -1,6 +1,8 @@
-<omni-table #basicTable [tableData]="listOfData">
+<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+<omni-table #basicTable [tableData]="listOfDisplayData">
   <thead>
     <tr>
+      <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
       <th>Name</th>
       <th>Age</th>
       <th>Address</th>
@@ -8,9 +10,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
+    <tr *ngFor="let data of basicTable.data" class="editable-row">
+      <td>{{ data.key }}</td>
       <td>{{ data.name }}</td>
-      <td>{{ data.age }}</td>
+      <td>
+        <div class="editable-cell" *ngIf="editId !== data.key; else editTpl">
+          <div class="editable-cell-value-wrap" (click)="startEdit(data.key, $event)">
+            {{ data.name }}
+          </div>
+        </div>
+        <ng-template #editTpl>
+          <input #inputField type="text" nz-input [(ngModel)]="data.name" />
+        </ng-template>
+      </td>
       <td>{{ data.address }}</td>
       <td>
         <a>Action 一 {{ data.name }}</a>

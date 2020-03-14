@@ -1,438 +1,473 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
+  selector: 'omni-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'omnius';
-  listOfData = [
+  editId: string | null;
+  @ViewChild('inputField', { static: false, read: ElementRef }) inputElement: ElementRef;
+
+  private readonly listOfData = [
     {
-      key: '1',
+      key: 0,
       name: 'John Brown',
       age: 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      key: '2',
+      key: 1,
       name: 'Jim Green',
       age: 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 2,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 4,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 3,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 5,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 6,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 7,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 8,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 9,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 10,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 11,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 12,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 13,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 14,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 15,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 16,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 17,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 18,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 19,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 20,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 21,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 22,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 23,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 24,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 25,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 26,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 27,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 28,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 29,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 30,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 31,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 32,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 33,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 34,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 35,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 36,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 37,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 38,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 39,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 40,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 41,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 42,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 43,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 44,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 45,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 46,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 47,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 48,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 49,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 50,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 51,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 52,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 53,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 54,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 55,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 56,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 57,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 58,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 59,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 60,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 61,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 62,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 63,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 64,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 65,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 66,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 67,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 68,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 69,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      key: '3',
+      key: 70,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
-    },
+    }
   ];
+  public listOfDisplayData = [...this.listOfData];
+
+
+  @HostListener('window:click', ['$event'])
+  handleClick(e: MouseEvent): void {
+    if (this.editId && this.inputElement && this.inputElement.nativeElement !== e.target) {
+      this.editId = null;
+    }
+  }
+
+  startEdit(id: string, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.editId = id;
+  }
+
+  onSortChange(event: { key: string; value: string | null }): void {
+    const sortField = event.key;
+    const sortDirection = event.value;
+    const dataCopy = [...this.listOfData];
+    if (sortDirection) {
+      this.listOfDisplayData = dataCopy.sort((a, b) => {
+        if (sortDirection === 'asc') {
+          return a[sortField] > b[sortField] ? 1 : -1;
+        } else if (sortDirection === 'dsc') {
+          return b[sortField] > a[sortField] ? 1 : -1;
+        }
+      });
+    } else {
+      this.listOfDisplayData = [...this.listOfData];
+    }
+  }
 }

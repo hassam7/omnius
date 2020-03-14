@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'omni-table',
   templateUrl: './omni-table.component.html',
-  styleUrls: ['./omni-table.component.scss']
+  styleUrls: ['./omni-table.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class OmniTableComponent implements OnInit, OnChanges {
   data: {[key: string]: any};
@@ -16,7 +17,7 @@ export class OmniTableComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-      //
+    this.data = this.tableData;
   }
 
 }

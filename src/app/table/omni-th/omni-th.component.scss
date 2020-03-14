@@ -1,0 +1,15 @@
+.th-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sorting {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+
+  svg.on path{
+    fill: #2593FC;
+  }
+}
