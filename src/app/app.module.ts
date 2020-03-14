@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableModule } from './table/table.module';
+import { TestModule } from './test/test.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { TableModule } from './table/table.module';
     AppRoutingModule,
     TableModule,
     FormsModule,
+    TestModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
