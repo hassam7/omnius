@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'omni-table',
@@ -9,8 +10,11 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewEncapsulation }
 export class OmniTableComponent implements OnInit, OnChanges {
   data: {[key: string]: any};
   @Input() tableData: {[key: string]: any};
-  @Input() shouldShowPagination = true;
-  constructor() { }
+  @Input() shouldShowPagination = false;
+  get queryParams() {
+    return {};
+  }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.data = this.tableData;
@@ -20,4 +24,7 @@ export class OmniTableComponent implements OnInit, OnChanges {
     this.data = this.tableData;
   }
 
+  public updateQueryParams() {
+    this.router.navigate([this.router.url], { queryParams: this.queryParams, replaceUrl: true });
+  }
 }
