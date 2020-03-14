@@ -1,7 +1,5 @@
 <div class="table-container">
-  <ng-container *ngIf="shouldShowPagination">
-    Show Pagination
-  </ng-container>
+  <ng-content select=".pagination"></ng-content>
   <table>
     <ng-content></ng-content>
   </table>

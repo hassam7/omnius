@@ -10,7 +10,7 @@ export class AppComponent {
   editId: string | null;
   @ViewChild('inputField', { static: false, read: ElementRef }) inputElement: ElementRef;
 
-  private readonly listOfData = [
+  public readonly listOfData = [
     {
       key: 0,
       name: 'John Brown',

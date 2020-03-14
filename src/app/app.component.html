@@ -1,5 +1,7 @@
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 <omni-table #basicTable [tableData]="listOfDisplayData">
+  <omni-pagination class="pagination" selectedPageSize="15" [pageSizes]="[10, 15, 20,30]" [totalItems]="listOfData.length"
+    [currentPage]="1">
+  </omni-pagination>
   <thead>
     <tr>
       <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
