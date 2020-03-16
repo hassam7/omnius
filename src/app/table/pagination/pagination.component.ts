@@ -1,16 +1,18 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'omni-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })
-export class OmniPaginationComponent implements OnInit {
-  @Input() pageSizes = [5, 10, 15, 20, 30, 40];
+export class OmniPaginationComponent {
+  @Input() pageSizes = [5, 10, 25, 50, 100];
 
   @Input()
   set selectedPageSize(pageSize) {
-    this.selectedPageSizeInternal = pageSize;
+    if (pageSize) {
+      this.selectedPageSizeInternal = pageSize;
+    }
   }
 
   get selectedPageSize(): number {
@@ -28,11 +30,11 @@ export class OmniPaginationComponent implements OnInit {
     }
     this.currentPageInternal = page;
   }
-
   get currentPage(): number {
     return this.currentPageInternal;
   }
-  private selectedPageSizeInternal: number;
+  @Output() pageSizeChanged = new EventEmitter();
+  private selectedPageSizeInternal = 25;
   private currentPageInternal: number;
 
   get totalNumberOfPages(): number {
@@ -47,24 +49,18 @@ export class OmniPaginationComponent implements OnInit {
     return Math.min(this.startIndex + this.selectedPageSize, this.totalItems);
   }
 
-  ngOnInit(): void {
-    console.log('X', this.startIndex, this.endIndex);
-  }
-
-  selectedPageSizeChanged() {
+  selectedPageSizeChanged(pageSize: string) {
     this.currentPage = Math.min(this.currentPage, this.totalNumberOfPages);
-    console.log('Foo', this.startIndex, this.endIndex);
+    this.pageSizeChanged.emit(+pageSize);
   }
 
   nextPage() {
-    console.log('Next Page');
     this.currentPage++;
-    console.log(this.startIndex, this.endIndex);
+    // console.log(this.startIndex, this.endIndex);
   }
 
   previousPage() {
-    console.log('Previous Page');
     this.currentPage--;
-    console.log(this.startIndex, this.endIndex);
+    // console.log(this.startIndex, this.endIndex);
   }
 }

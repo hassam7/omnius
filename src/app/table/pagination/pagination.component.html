@@ -8,28 +8,28 @@
       <ng-template [ngTemplateOutlet]="iconNext"></ng-template>
     </span>
   </div>
-  <select [(ngModel)]="selectedPageSize" (ngModelChange)="selectedPageSizeChanged()">
-    <option [attr.selected]="i==0" *ngFor="let option of pageSizes;let i = index" [value]="option"> {{option}} / Page
+  <select [(ngModel)]="selectedPageSize" (ngModelChange)="selectedPageSizeChanged($event)">
+    <option #opt [attr.selected]="i==0" *ngFor="let option of pageSizes;let i = index" [value]="option"> {{option}} / Page
     </option>
   </select>
 </div>
 
 <ng-template #iconPrevious>
-  <a href="#" (click)="previousPage()">
+  <span (click)="previousPage()">
     <svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="left" aria-hidden="true">
       <path
         d="M724 218.3V141c0-6.7-7.7-10.4-12.9-6.3L260.3 486.8a31.86 31.86 0 000 50.3l450.8 352.1c5.3 4.1 12.9.4 12.9-6.3v-77.3c0-4.9-2.3-9.6-6.1-12.6l-360-281 360-281.1c3.8-3 6.1-7.7 6.1-12.6z">
       </path>
     </svg>
-  </a>
+  </span>
 </ng-template>
 
 <ng-template #iconNext>
-  <a href="#" (click)="nextPage()">
+  <span (click)="nextPage()">
     <svg viewBox="64 64 896 896" fill="currentColor" width="1em" height="1em" data-icon="right" aria-hidden="true">
       <path
         d="M765.7 486.8L314.9 134.7A7.97 7.97 0 00302 141v77.3c0 4.9 2.3 9.6 6.1 12.6l360 281.1-360 281.1c-3.9 3-6.1 7.7-6.1 12.6V883c0 6.7 7.7 10.4 12.9 6.3l450.8-352.1a31.96 31.96 0 000-50.4z">
       </path>
     </svg>
-  </a>
+  </span>
 </ng-template>
