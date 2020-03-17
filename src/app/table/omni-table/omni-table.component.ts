@@ -51,7 +51,8 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
         delete params.sortValues;
       }
     }
-    if (this.searchTerm?.trim().length) {
+    // if (this.searchTerm?.trim().length) { // stack blitz demo fails because of this
+    if (this.searchTerm && this.searchTerm.trim().length) { // stack blitz demo fails because of this
       params.searchTerm = this.searchTerm;
     }
     if (this.customParams) {
