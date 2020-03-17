@@ -1,50 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
+import { OmniTableComponent } from '../table/omni-table/omni-table.component';
 
 @Component({
   selector: 'omni-test',
-  template: `
-    <omni-table #basicTable [tableData]="listOfDisplayData">
-  <omni-pagination class="pagination" selectedPageSize="15" [pageSizes]="[10, 15, 20,30]" [totalItems]="listOfData.length"
-    [currentPage]="1">
-  </omni-pagination>
-  <thead>
-    <tr>
-      <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of basicTable.data" class="editable-row">
-      <td>{{ data.key }}</td>
-      <td>{{ data.name }}</td>
-      <td>
-        <div class="editable-cell" *ngIf="editId !== data.key; else editTpl">
-          <div class="editable-cell-value-wrap" (click)="startEdit(data.key, $event)">
-            {{ data.name }}
-          </div>
-        </div>
-        <ng-template #editTpl>
-          <input #inputField type="text" nz-input [(ngModel)]="data.name" />
-        </ng-template>
-      </td>
-      <td>{{ data.address }}</td>
-      <td>
-        <div [omniMapTypeToHtmlControlMapTypeToHtmlControl]="false"></div>
-      </td>
-    </tr>
-  </tbody>
-</omni-table>
-
-  `,
-  styles: []
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.scss']
 })
 export class TestComponent {
   editId: string | null;
   @ViewChild('inputField', { static: false, read: ElementRef }) inputElement: ElementRef;
-
+  @ViewChild(OmniTableComponent, { static: false }) omniTable: OmniTableComponent;
   public readonly listOfData = [
     {
       key: 0,
@@ -55,19 +21,19 @@ export class TestComponent {
     {
       key: 1,
       name: 'Jim Green',
-      age: 42,
+      age: 33,
       address: 'London No. 1 Lake Park'
     },
     {
       key: 2,
       name: 'Joe Black',
-      age: 32,
+      age: 44,
       address: 'Sidney No. 1 Lake Park'
     },
     {
       key: 4,
       name: 'Joe Black',
-      age: 32,
+      age: 55,
       address: 'Sidney No. 1 Lake Park'
     },
     {
@@ -474,7 +440,10 @@ export class TestComponent {
     }
   ];
   public listOfDisplayData = [...this.listOfData];
-
+  ageFilter = [{ text: 32, value: 32 }, { text: 33, value: 33, byDefault: true }];
+  nameFilter = [{ text: 'John Brown', value: 'John Brown' }, { text: 'Jim Green', value: 'Jim Green', byDefault: true }];
+  constructor(private router: Router) {
+  }
 
   @HostListener('window:click', ['$event'])
   handleClick(e: MouseEvent): void {
@@ -489,20 +458,29 @@ export class TestComponent {
     this.editId = id;
   }
 
+  updateTextToUrl(data) {
+    const { key, name } = data;
+    this.omniTable.addToUrlState(`${key};${name}`);
+  }
+
+  onFilterChange(items) {
+    console.log(items);
+  }
+
   onSortChange(event: { key: string; value: string | null }): void {
-    const sortField = event.key;
-    const sortDirection = event.value;
-    const dataCopy = [...this.listOfData];
-    if (sortDirection) {
-      this.listOfDisplayData = dataCopy.sort((a, b) => {
-        if (sortDirection === 'asc') {
-          return a[sortField] > b[sortField] ? 1 : -1;
-        } else if (sortDirection === 'dsc') {
-          return b[sortField] > a[sortField] ? 1 : -1;
-        }
-      });
-    } else {
-      this.listOfDisplayData = [...this.listOfData];
-    }
+    // const sortField = event.key;
+    // const sortDirection = event.value;
+    // const dataCopy = [...this.listOfData];
+    // if (sortDirection) {
+    //   this.listOfDisplayData = dataCopy.sort((a, b) => {
+    //     if (sortDirection === 'asc') {
+    //       return a[sortField] > b[sortField] ? 1 : -1;
+    //     } else if (sortDirection === 'dsc') {
+    //       return b[sortField] > a[sortField] ? 1 : -1;
+    //     }
+    //   });
+    // } else {
+    //   this.listOfDisplayData = [...this.listOfData];
+    // }
   }
 }

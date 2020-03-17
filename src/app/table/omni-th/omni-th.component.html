@@ -1,12 +1,17 @@
-<div class="th-container" (click)="updateSortValue()">
+<div class="th-container">
   <div class="name">
     <ng-content></ng-content>
   </div>
-  <div class="sorting" *ngIf="isSortable">
+  <div class="sorting" (click)="updateSortValue()" *ngIf="isSortable">
     <ng-template [ngTemplateOutlet]="sortingIcons"></ng-template>
   </div>
-  <div class="filter" *ngIf="false">
-    <ng-template [ngTemplateOutlet]="filterIcon"></ng-template>
+  <div class="filter" *ngIf="shouldShowFilter">
+    <div class="filter-icon" (click)="showFilters = !showFilters">
+      <ng-template [ngTemplateOutlet]="filterIcon"></ng-template>
+    </div>
+    <div class="filter-context" *ngIf="showFilters">
+      <ng-template [ngTemplateOutlet]="filterTemplate"></ng-template>
+    </div>
   </div>
 </div>
 
@@ -26,9 +31,20 @@
 </ng-template>
 
 <ng-template #filterIcon>
-  <svg viewBox="64 64 896 896" fill="#bfbfbf" width="1em" height="1em" data-icon="filter" aria-hidden="true">
+  <svg [class.active]="filterList.length" viewBox="64 64 896 896" fill="#bfbfbf" width="1em" height="1em" data-icon="filter" aria-hidden="true">
     <path
       d="M349 838c0 17.7 14.2 32 31.8 32h262.4c17.6 0 31.8-14.3 31.8-32V642H349v196zm531.1-684H143.9c-24.5 0-39.8 26.7-27.5 48l221.3 376h348.8l221.3-376c12.1-21.3-3.2-48-27.7-48z">
     </path>
   </svg>
+</ng-template>
+
+<ng-template #filterTemplate>
+  <div class="filter-template">
+    <div class="filter-item" *ngFor="let item of multipleFilterList">
+      <label [attr.for]="item.value"></label>
+      <input [attr.name]="item.value" type="checkbox" class="filter-item" [ngModel]="item.checked"
+      (ngModelChange)="checkMultiple(item)">
+      <span>{{item.text}}</span>
+    </div>
+  </div>
 </ng-template>

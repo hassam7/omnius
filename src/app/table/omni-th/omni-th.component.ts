@@ -1,5 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
+export interface ThItemInterface {
+  text: string;
+  value: any;
+  checked: boolean;
+}
+
+type ThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
 @Component({
   // tslint:disable-next-line: component-selector
   selector: 'th',
@@ -7,14 +15,34 @@ import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } fro
   styleUrls: ['./omni-th.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class OmniThComponent implements OnInit {
+export class OmniThComponent implements OnInit, OnChanges {
+  public showFilters = false;
+  @Input() filterName: string;
   @Input() isSortable = false;
   @Input() sortKey: string;
   @Input() sortDirection: 'asc' | 'dsc' | null = null;
+  @Input() shouldShowFilter = false;
+  multipleFilterList: ThItemInterface[] = []; // used in template
+  @Input() multipleFilters: ThFilterType = [];
+
   @Output() readonly sortChange = new EventEmitter<{ key: string; value: string | null }>();
+  @Output() readonly filterChange = new EventEmitter<any>();
+  private sortChangeSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public sortChange$ = this.sortChangeSubject.asObservable();
   constructor() { }
 
+  get filterList() {
+    return this.multipleFilterList.filter(item => item.checked).map(item => item.value);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.multipleFilters && this.multipleFilters) {
+      this.initMultipleFilters();
+    }
+  }
+
   ngOnInit(): void {
+    this.initMultipleFilters();
   }
 
   updateSortValue(): void {
@@ -34,6 +62,19 @@ export class OmniThComponent implements OnInit {
   setSortValue(value: 'asc' | 'dsc' | null): void {
     this.sortDirection = value;
     this.sortChange.emit({ key: this.sortKey, value: this.sortDirection });
+    this.sortChangeSubject.next({ key: this.sortKey, value: this.sortDirection });
   }
 
+  initMultipleFilters() {
+    this.multipleFilterList = this.multipleFilters.map(item => {
+      const checked = !!item.byDefault;
+      return { text: item.text, value: item.value, checked };
+    });
+    return this.multipleFilterList;
+  }
+
+  checkMultiple(item: ThItemInterface) {
+    item.checked = !item.checked;
+    this.filterChange.emit(this.filterList);
+  }
 }
