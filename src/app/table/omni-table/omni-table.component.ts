@@ -40,7 +40,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
     const sortFilters = this.sortFilters.value;
     if (sortFilters.length) {
-      const filterToChange = sortFilters.filter(item => !!item.value);
+      const filterToChange = sortFilters.filter(item => !!(item as any).value);
       if (filterToChange.length) {
         const keys = filterToChange.map(d => d.key);
         const values = filterToChange.map(d => d.value);
