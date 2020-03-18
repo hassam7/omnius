@@ -26,12 +26,12 @@ export class OmniThComponent implements OnInit, OnChanges {
   @Input() multipleFilters: ThFilterType = [];
 
   @Output() readonly sortChange = new EventEmitter<{ key: string; value: string | null }>();
-  @Output() readonly filterChange = new EventEmitter<any>();
+  @Output() readonly filterChange = new EventEmitter<string[]>();
   private sortChangeSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public sortChange$ = this.sortChangeSubject.asObservable();
   constructor() { }
 
-  get filterList() {
+  get filterList(): string[] {
     return this.multipleFilterList.filter(item => item.checked).map(item => item.value);
   }
 

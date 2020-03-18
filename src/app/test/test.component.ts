@@ -440,8 +440,8 @@ export class TestComponent {
     }
   ];
   public listOfDisplayData = [...this.listOfData];
-  ageFilter = [{ text: 32, value: 32 }, { text: 33, value: 33, byDefault: true }];
-  nameFilter = [{ text: 'John Brown', value: 'John Brown' }, { text: 'Jim Green', value: 'Jim Green', byDefault: true }];
+  ageFilter = [{ text: 32, value: 32 }, { text: 33, value: 33 }];
+  nameFilter = [{ text: 'John Brown', value: 'John Brown' }, { text: 'Jim Green', value: 'Jim Green'}];
   constructor(private router: Router) {
   }
 

@@ -30,6 +30,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   public searchTerm;
   public currentPageSizeAction: BehaviorSubject<number | null>;
   private sortFilters: BehaviorSubject<Array<{ key: string; value: string | null }> | []>;
+  private filter: BehaviorSubject<Array<any> | []>;
   private theadReady: Subject<void> = new Subject();
   private customParams;
   get params() {
@@ -51,6 +52,19 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
         delete params.sortValues;
       }
     }
+
+    const currentFilter = this.filter.value;
+
+    if (currentFilter.length > 0) {
+      const filterName = currentFilter.map(item => item.name);
+      const filterValues = currentFilter.map(item => item.filter);
+      params.filterNames = filterName;
+      params.filterValues = filterValues;
+    } else {
+      delete params.filterNames;
+      delete params.filterValues;
+    }
+
     // if (this.searchTerm?.trim().length) { // stack blitz demo fails because of this
     if (this.searchTerm && this.searchTerm.trim().length) { // stack blitz demo fails because of this
       params.searchTerm = this.searchTerm;
@@ -79,8 +93,13 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   ngAfterContentInit() {
     this.thead.sortChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      this.sortFilters.next(data);
+      // this.sortFilters.next(data);
     });
+
+    this.thead.filterChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      console.log('next');
+      this.filter.next(data);
+    })
     this.theadReady.next();
   }
 
@@ -120,8 +139,26 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
       }
       if (sortKeys.length === sortValues.length) {
         const sortConfig = sortKeys.map((key: string, index: number) => ({ key, value: sortValues[index] }));
+        // this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        //   this.thead.updateThSortingStatus(sortConfig);
+        // });
+      }
+    }
+
+    if (params.filterNames && params.filterValues) {
+      let filterNames = params.filterNames;
+      let filterValues = params.filterValues;
+      if (typeof filterValues === 'string') {
+        filterValues = filterValues.split(',');
+      }
+      if (typeof filterNames === 'string') {
+        filterNames = filterNames.split(',');
+      }
+      if (filterNames.length === filterValues.length) {
+        const filterConfig = filterNames.map((key: string, index: number) => ({key, value: filterValues[index]}));
+        console.log('zzz', filterConfig);
         this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
-          this.thead.updateThSortingStatus(sortConfig);
+          this.thead.updateFilters(filterConfig);
         });
       }
     }
@@ -138,10 +175,11 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   private initFilterStreams() {
     this.currentPageSizeAction = new BehaviorSubject(null);
     this.sortFilters = new BehaviorSubject([]);
+    this.filter = new BehaviorSubject([]);
   }
 
   private subscribeParamsStream() {
-    combineLatest([this.currentPageSizeAction, this.sortFilters])
+    combineLatest([this.currentPageSizeAction, this.sortFilters, this.filter])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateQueryParams();
