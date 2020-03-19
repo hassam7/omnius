@@ -21,7 +21,6 @@ export class OmniThComponent implements OnInit, OnChanges {
   @Input() isSortable = false;
   @Input() sortKey: string;
   @Input() sortDirection: 'asc' | 'dsc' | null = null;
-  @Input() shouldShowFilter = false;
   multipleFilterList: ThItemInterface[] = []; // used in template
   @Input() multipleFilters: ThFilterType = [];
 
@@ -63,6 +62,17 @@ export class OmniThComponent implements OnInit, OnChanges {
     this.sortDirection = value;
     this.sortChange.emit({ key: this.sortKey, value: this.sortDirection });
     this.sortChangeSubject.next({ key: this.sortKey, value: this.sortDirection });
+  }
+
+  setFilterVaues(values: []) {
+    values.forEach(value => {
+      // tslint:disable-next-line: triple-equals
+      const itemToFind = this.multipleFilterList.find(item => item.value == value);
+      if (itemToFind) {
+        itemToFind.checked = true;
+      }
+    });
+    this.filterChange.emit(this.filterList);
   }
 
   initMultipleFilters() {

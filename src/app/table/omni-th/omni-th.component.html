@@ -5,7 +5,7 @@
   <div class="sorting" (click)="updateSortValue()" *ngIf="isSortable">
     <ng-template [ngTemplateOutlet]="sortingIcons"></ng-template>
   </div>
-  <div class="filter" *ngIf="shouldShowFilter">
+  <div class="filter" *ngIf="filterName">
     <div class="filter-icon" (click)="showFilters = !showFilters">
       <ng-template [ngTemplateOutlet]="filterIcon"></ng-template>
     </div>

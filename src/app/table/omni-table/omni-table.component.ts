@@ -56,13 +56,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     const currentFilter = this.filter.value;
 
     if (currentFilter.length > 0) {
-      const filterName = currentFilter.map(item => item.name);
-      const filterValues = currentFilter.map(item => item.filter);
-      params.filterNames = filterName;
-      params.filterValues = filterValues;
-    } else {
-      delete params.filterNames;
-      delete params.filterValues;
+      params.filterParams = window.encodeURI(JSON.stringify(currentFilter));
     }
 
     // if (this.searchTerm?.trim().length) { // stack blitz demo fails because of this
@@ -81,6 +75,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     this.initFilterStreams();
     this.subscribeParamsStream();
     route.params.subscribe(this.setParamsToControl.bind(this));
+    this.theadReady.subscribe(s => console.log('ss, s'))
   }
 
   ngOnInit(): void {
@@ -93,11 +88,11 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   ngAfterContentInit() {
     this.thead.sortChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      // this.sortFilters.next(data);
+      this.sortFilters.next(data);
     });
 
     this.thead.filterChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      console.log('next');
+      console.log(data)
       this.filter.next(data);
     })
     this.theadReady.next();
@@ -139,28 +134,17 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
       }
       if (sortKeys.length === sortValues.length) {
         const sortConfig = sortKeys.map((key: string, index: number) => ({ key, value: sortValues[index] }));
-        // this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
-        //   this.thead.updateThSortingStatus(sortConfig);
-        // });
+        this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.thead.updateThSortingStatus(sortConfig);
+        });
       }
     }
 
-    if (params.filterNames && params.filterValues) {
-      let filterNames = params.filterNames;
-      let filterValues = params.filterValues;
-      if (typeof filterValues === 'string') {
-        filterValues = filterValues.split(',');
-      }
-      if (typeof filterNames === 'string') {
-        filterNames = filterNames.split(',');
-      }
-      if (filterNames.length === filterValues.length) {
-        const filterConfig = filterNames.map((key: string, index: number) => ({key, value: filterValues[index]}));
-        console.log('zzz', filterConfig);
-        this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
-          this.thead.updateFilters(filterConfig);
-        });
-      }
+    if (params.filterParams) {
+      const paramData = JSON.parse(window.decodeURI(params.filterParams));
+      this.theadReady.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.thead.updateFilters(paramData);
+      });
     }
 
     if (params?.searchTerm?.trim()?.length) {

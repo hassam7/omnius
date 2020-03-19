@@ -12,7 +12,7 @@ import { OmniThComponent } from '../omni-th/omni-th.component';
 export class OmniTheadComponent implements AfterContentInit, OnDestroy {
   @ContentChildren(OmniThComponent, { descendants: true }) thList: QueryList<OmniThComponent>;
   @Output() sortChange = new EventEmitter<Array<{ key: string; value: string | null }>>();
-  @Output() filterChange = new EventEmitter<Array<{name: string, filter: number[] | string[]}>>();
+  @Output() filterChange = new EventEmitter<Array<{ name: string, filter: number[] | string[] }>>();
   private destroy$ = new Subject<void>();
 
   ngAfterContentInit() {
@@ -24,7 +24,7 @@ export class OmniTheadComponent implements AfterContentInit, OnDestroy {
   initFilteringStream() {
     combineLatest(
       [...this.thList
-        .filter(th => th.shouldShowFilter)
+        .filter(th => !!th.filterName)
       ]
         .map(
           th => th.filterChange.pipe(
@@ -57,12 +57,17 @@ export class OmniTheadComponent implements AfterContentInit, OnDestroy {
 
   updateFilters(filterConfig) {
     const thToUpdate = this.thList
-      .filter(th => !!th.showFilters)
+      .filter(th => !!th.filterName)
       .reduce((acc, currentValue) => {
         acc[currentValue.filterName] = currentValue;
         return acc;
       }, {});
-      debugger;
+    filterConfig.forEach(k => {
+      const filterName = k.name;
+      const filterValues = k.filter;
+      const thComponent: OmniThComponent = thToUpdate[filterName];
+      thComponent.setFilterVaues(filterValues);
+    });
   }
 
   updateThSortingStatus(sortConfig: Array<{ key: string; value: string }>) {
