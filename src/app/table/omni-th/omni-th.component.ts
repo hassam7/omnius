@@ -23,7 +23,7 @@ export class OmniThComponent implements OnInit, OnChanges {
   @Input() sortDirection: 'asc' | 'dsc' | null = null;
   multipleFilterList: ThItemInterface[] = []; // used in template
   @Input() multipleFilters: ThFilterType = [];
-
+  @Input() width: string;
   @Output() readonly sortChange = new EventEmitter<{ key: string; value: string | null }>();
   @Output() readonly filterChange = new EventEmitter<string[]>();
   private sortChangeSubject: BehaviorSubject<any> = new BehaviorSubject(null);

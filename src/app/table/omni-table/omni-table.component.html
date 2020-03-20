@@ -1,11 +1,15 @@
 <div class="table-container">
   <div class="header">
-    <omni-search *ngIf="shouldShowSearch" [searchTerm]="searchTerm" (searchTermChange)="onSearchTermChange($event)"></omni-search>
-    <omni-pagination class="pagination" [selectedPageSize]="currentPageSizeAction.value" (pageSizeChanged)="onPageSizeChange($event)" [totalItems]="totalItems"
-      [currentPage]="1">
+    <omni-search *ngIf="shouldShowSearch" [searchTerm]="searchTerm" (searchTermChange)="onSearchTermChange($event)">
+    </omni-search>
+    <omni-pagination class="pagination" [selectedPageSize]="currentPageSizeAction.value"
+      (pageSizeChanged)="onPageSizeChange($event)" [totalItems]="totalItems" [currentPage]="1">
     </omni-pagination>
   </div>
   <table>
+    <colgroup>
+      <col *ngFor="let item of listOfThComponents" [style.width]="item.width">
+    </colgroup>
     <ng-content></ng-content>
   </table>
 </div>

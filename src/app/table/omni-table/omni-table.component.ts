@@ -8,11 +8,14 @@ import {
   ContentChild,
   AfterContentInit,
   OnDestroy,
+  ContentChildren,
+  QueryList,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
 import { takeUntil, filter, tap } from 'rxjs/operators';
 import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
+import { OmniThComponent } from '../omni-th/omni-th.component';
 
 @Component({
   selector: 'omni-table',
@@ -27,7 +30,8 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   @Input() totalItems = 71;
   @Input() shouldShowSearch = true;
   @ContentChild(OmniTheadComponent) thead: OmniTheadComponent;
-  public searchTerm;
+  @ContentChildren(OmniThComponent, {descendants: true}) listOfThComponents: QueryList<OmniThComponent>;
+  public searchTerm: string;
   public currentPageSizeAction: BehaviorSubject<number | null>;
   private sortFilters: BehaviorSubject<Array<{ key: string; value: string | null }> | []>;
   private filter: BehaviorSubject<Array<any> | []>;
