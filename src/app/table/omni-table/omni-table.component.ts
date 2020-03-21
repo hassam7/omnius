@@ -9,12 +9,13 @@ import {
   AfterContentInit,
   OnDestroy,
   ContentChildren,
-  QueryList
+  QueryList,
+  ElementRef
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
-import { takeUntil, filter, tap } from 'rxjs/operators';
-import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { OmniThComponent } from '../omni-th/omni-th.component';
 import { PARAM_CODEC } from '../utils/util';
 import { HttpParams } from '@angular/common/http';
@@ -78,7 +79,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute, private el: ElementRef) {
     this.initFilterStreams();
     this.subscribeParamsStream();
     route.params.subscribe(this.setParamsToControl.bind(this));
@@ -93,6 +94,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   }
 
   ngAfterContentInit() {
+    console.log('content inited');
     this.thead.sortChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.sortFilters.next(data);
     });
@@ -101,6 +103,14 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
       console.log(data);
       this.filter.next(data);
     });
+
+    merge(...this.listOfThComponents.map(th => th.columnVisibilityChange))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ shouldHide, el }) => {
+        const index = Array.from(this.el.nativeElement.querySelectorAll('th')).findIndex(item => item === el);
+        const rows = Array.from((this.el.nativeElement.querySelector('table') as HTMLTableElement).rows);
+        rows.forEach(row => (row.cells[index].style.display = `${shouldHide ? 'none' : 'table-cell'}`));
+      });
     this.theadReady.next();
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface ThItemInterface {
@@ -26,9 +26,10 @@ export class OmniThComponent implements OnInit, OnChanges {
   @Input() width: string;
   @Output() readonly sortChange = new EventEmitter<{ key: string; value: string | null }>();
   @Output() readonly filterChange = new EventEmitter<string[]>();
+  @Output() readonly columnVisibilityChange = new EventEmitter<{shouldHide: boolean, el: HTMLTableCellElement}>();
   private sortChangeSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public sortChange$ = this.sortChangeSubject.asObservable();
-  constructor() {}
+  constructor(private el: ElementRef) {}
 
   get filterList(): string[] {
     return this.multipleFilterList.filter(item => item.checked).map(item => item.value);
@@ -40,6 +41,14 @@ export class OmniThComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initMultipleFilters();
+  }
+
+  hideColumn() {
+    this.columnVisibilityChange.emit({shouldHide: true, el: this.el.nativeElement});
+  }
+
+  showColumn() {
+    this.columnVisibilityChange.emit({shouldHide: false, el: this.el.nativeElement});
   }
 
   updateSortValue(): void {
