@@ -8,14 +8,18 @@ import { FormsModule } from '@angular/forms';
 import { OmniTheadComponent } from './omni-thead/omni-thead.component';
 import { OmniSearchComponent } from './omni-search/omni-search.component';
 
-const COMPONENTS = [OmniTableComponent, MapTypeToHtmlControlDirective, OmniThComponent, OmniPaginationComponent, OmniTheadComponent, OmniSearchComponent];
+const COMPONENTS = [
+  OmniTableComponent,
+  MapTypeToHtmlControlDirective,
+  OmniThComponent,
+  OmniPaginationComponent,
+  OmniTheadComponent,
+  OmniSearchComponent
+];
 
 @NgModule({
   declarations: COMPONENTS,
   exports: COMPONENTS,
-  imports: [
-    CommonModule,
-    FormsModule,
-  ]
+  imports: [CommonModule, FormsModule]
 })
-export class TableModule { }
+export class TableModule {}

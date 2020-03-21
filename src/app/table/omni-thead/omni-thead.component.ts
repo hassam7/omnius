@@ -1,5 +1,5 @@
 import { merge, Subject, combineLatest } from 'rxjs';
-import { takeUntil, filter, tap, map, startWith, } from 'rxjs/operators';
+import { takeUntil, filter, tap, map, startWith } from 'rxjs/operators';
 import { Component, ContentChildren, QueryList, AfterContentInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { OmniThComponent } from '../omni-th/omni-th.component';
 
@@ -12,7 +12,7 @@ import { OmniThComponent } from '../omni-th/omni-th.component';
 export class OmniTheadComponent implements AfterContentInit, OnDestroy {
   @ContentChildren(OmniThComponent, { descendants: true }) thList: QueryList<OmniThComponent>;
   @Output() sortChange = new EventEmitter<Array<{ key: string; value: string | null }>>();
-  @Output() filterChange = new EventEmitter<Array<{ name: string, filter: number[] | string[] }>>();
+  @Output() filterChange = new EventEmitter<Array<{ name: string; filter: number[] | string[] }>>();
   private destroy$ = new Subject<void>();
 
   ngAfterContentInit() {
@@ -20,37 +20,31 @@ export class OmniTheadComponent implements AfterContentInit, OnDestroy {
     this.initFilteringStream();
   }
 
-
   initFilteringStream() {
     combineLatest(
-      [...this.thList
-        .filter(th => !!th.filterName)
-      ]
-        .map(
-          th => th.filterChange.pipe(
-            startWith(null),
-            map(selectedItemArray => {
-              return selectedItemArray ? { name: th.filterName, filter: selectedItemArray } : null;
-            }),
-            takeUntil(this.destroy$),
-          )
+      [...this.thList.filter(th => !!th.filterName)].map(th =>
+        th.filterChange.pipe(
+          startWith(null),
+          map(selectedItemArray => {
+            return selectedItemArray ? { name: th.filterName, filter: selectedItemArray } : null;
+          }),
+          takeUntil(this.destroy$)
         )
-    )
-      .subscribe(data => {
-        data = data.filter(d => !!d);
-        this.filterChange.next(data);
-      });
+      )
+    ).subscribe(data => {
+      data = data.filter(d => !!d);
+      this.filterChange.next(data);
+    });
   }
 
   initSortingStream() {
-    combineLatest([...this.thList.filter(o => o.isSortable)
-      .map(o => o.sortChange$)])
+    combineLatest([...this.thList.filter(o => o.isSortable).map(o => o.sortChange$)])
       .pipe(
         map(array => array.filter(item => !!item)),
         filter(array => array.length !== 0),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
-      .subscribe((data) => {
+      .subscribe(data => {
         this.sortChange.emit(data);
       });
   }

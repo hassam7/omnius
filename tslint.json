@@ -2,10 +2,11 @@
   "extends": "tslint:recommended",
   "rules": {
     "array-type": false,
-    "arrow-parens": false,
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "deprecation": {
       "severity": "warning"
     },
+    "space-before-function-paren": [true, {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
@@ -44,6 +45,7 @@
       }
     ],
     "no-consecutive-blank-lines": false,
+    "curly": [true, "ignore-same-line"],
     "no-console": [
       true,
       "debug",
@@ -69,7 +71,25 @@
     "ordered-imports": false,
     "quotemark": [
       true,
-      "single"
+      "single",
+      "avoid-escape"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      },
+      {
+        "call-signature": "onespace",
+        "index-signature": "onespace",
+        "parameter": "onespace",
+        "property-declaration": "onespace",
+        "variable-declaration": "onespace"
+      }
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,

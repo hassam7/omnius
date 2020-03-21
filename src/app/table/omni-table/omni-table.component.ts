@@ -9,7 +9,7 @@ import {
   AfterContentInit,
   OnDestroy,
   ContentChildren,
-  QueryList,
+  QueryList
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
@@ -21,7 +21,7 @@ import { OmniThComponent } from '../omni-th/omni-th.component';
   selector: 'omni-table',
   templateUrl: './omni-table.component.html',
   styleUrls: ['./omni-table.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, OnDestroy {
   data: { [key: string]: any };
@@ -30,7 +30,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   @Input() totalItems = 71;
   @Input() shouldShowSearch = true;
   @ContentChild(OmniTheadComponent) thead: OmniTheadComponent;
-  @ContentChildren(OmniThComponent, {descendants: true}) listOfThComponents: QueryList<OmniThComponent>;
+  @ContentChildren(OmniThComponent, { descendants: true }) listOfThComponents: QueryList<OmniThComponent>;
   public searchTerm: string;
   public currentPageSizeAction: BehaviorSubject<number | null>;
   private sortFilters: BehaviorSubject<Array<{ key: string; value: string | null }> | []>;
@@ -39,9 +39,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   private customParams;
   get params() {
     const params: any = {};
-    if (this.currentPageSizeAction.value) {
-      params.pageSize = this.currentPageSizeAction.value;
-    }
+    if (this.currentPageSizeAction.value) params.pageSize = this.currentPageSizeAction.value;
 
     const sortFilters = this.sortFilters.value;
     if (sortFilters.length) {
@@ -59,17 +57,14 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
     const currentFilter = this.filter.value;
 
-    if (currentFilter.length > 0) {
-      params.filterParams = window.encodeURI(JSON.stringify(currentFilter));
-    }
+    if (currentFilter.length > 0) params.filterParams = window.encodeURI(JSON.stringify(currentFilter));
 
     // if (this.searchTerm?.trim().length) { // stack blitz demo fails because of this
-    if (this.searchTerm && this.searchTerm.trim().length) { // stack blitz demo fails because of this
+    if (this.searchTerm && this.searchTerm.trim().length) {
+      // stack blitz demo fails because of this
       params.searchTerm = this.searchTerm;
     }
-    if (this.customParams) {
-      params.customParams = this.customParams;
-    }
+    if (this.customParams) params.customParams = this.customParams;
     return params;
   }
 
@@ -79,7 +74,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     this.initFilterStreams();
     this.subscribeParamsStream();
     route.params.subscribe(this.setParamsToControl.bind(this));
-    this.theadReady.subscribe(s => console.log('ss, s'))
+    this.theadReady.subscribe(s => console.log('ss, s'));
   }
 
   ngOnInit(): void {
@@ -96,12 +91,11 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     });
 
     this.thead.filterChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      console.log(data)
+      console.log(data);
       this.filter.next(data);
-    })
+    });
     this.theadReady.next();
   }
-
 
   ngOnDestroy() {
     this.destroy$.next();
@@ -127,7 +121,6 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
       this.currentPageSizeAction.next(params.pageSize);
     }
     if (params.sortKeys && params.sortValues) {
-
       let sortValues = params.sortValues;
       let sortKeys = params.sortKeys;
       if (typeof sortKeys === 'string') {
