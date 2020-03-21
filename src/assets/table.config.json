@@ -1,0 +1,6 @@
+{
+  "paginationSizes": [5, 10, 25, 50, 100],
+  "pageSize": 25,
+  "showSearch": true,
+  "shouldShowPagination": true
+}

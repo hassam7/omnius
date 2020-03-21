@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular
 import { Router } from '@angular/router';
 import { OmniTableComponent } from '../table/omni-table/omni-table.component';
 import data from '../../assets/data.json';
-
 @Component({
   selector: 'omni-test',
   templateUrl: './test.component.html',
@@ -22,7 +21,7 @@ export class TestComponent {
     { text: 'Bonnie Wynn', value: 'Bonnie Wynn' },
     { text: 'Colette Ratliff', value: 'Colette Ratliff' }
   ];
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   @HostListener('window:click', ['$event'])
   handleClick(e: MouseEvent): void {
