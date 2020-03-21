@@ -16,6 +16,8 @@ import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
 import { takeUntil, filter, tap } from 'rxjs/operators';
 import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { OmniThComponent } from '../omni-th/omni-th.component';
+import { PARAM_CODEC } from '../utils/util';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'omni-table',
@@ -70,11 +72,10 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   private destroy$ = new Subject<void>();
 
-  constructor(private router: Router, route: ActivatedRoute) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.initFilterStreams();
     this.subscribeParamsStream();
     route.params.subscribe(this.setParamsToControl.bind(this));
-    this.theadReady.subscribe(s => console.log('ss, s'));
   }
 
   ngOnInit(): void {
@@ -151,6 +152,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   private updateQueryParams() {
     this.router.navigate(['.', this.params]);
+    console.log(this.generateUrLFromParams());
   }
 
   private initFilterStreams() {
@@ -165,5 +167,24 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
       .subscribe(() => {
         this.updateQueryParams();
       });
+  }
+
+  private generateUrLFromParams() {
+    let paramsMap = new HttpParams({ encoder: PARAM_CODEC });
+    if (this.params.pageSize) paramsMap = paramsMap.set('pageSize', this.params.pageSize);
+    if (this.params.searchTerm) paramsMap = paramsMap.set('searchTerm', this.params.searchTerm);
+    if (this.params.sortKeys && this.params.sortValues) {
+      const sortParams = JSON.stringify(
+        this.params.sortKeys.map((key: string, index: number) => ({ [key]: this.params.sortValues[index] }))
+      );
+      paramsMap = paramsMap.set('sort', sortParams);
+    }
+
+    if (this.params.filterParams) {
+      const filterParams = JSON.parse(decodeURI(this.params.filterParams));
+      const filterParamsMapped = filterParams.map((key: { name: string; filter: any[] }) => ({ [key.name]: key.filter }));
+      paramsMap = paramsMap.set('filter', JSON.stringify(filterParamsMapped));
+    }
+    return paramsMap;
   }
 }

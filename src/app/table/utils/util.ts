@@ -1,0 +1,39 @@
+import { HttpParameterCodec } from '@angular/common/http';
+
+export function tryParseJSON(jsonString) {
+  try {
+    const o = JSON.parse(jsonString);
+
+    // Handle non-exception-throwing cases:
+    // Neither JSON.parse(false) or JSON.parse(1234) throw errors, hence the type-checking,
+    // but... JSON.parse(null) returns null, and typeof null === "object",
+    // so we must check for that, too. Thankfully, null is falsey, so this suffices:
+    if (o && typeof o === 'object') {
+      return o;
+    }
+  } catch (e) {}
+
+  return false;
+}
+
+
+class CustomHttpParamCodec implements HttpParameterCodec {
+  public encodeKey(key: string): string {
+    return encodeURIComponent(key);
+  }
+
+  public encodeValue(value: string): string {
+    if (tryParseJSON(value)) return value;
+    return encodeURIComponent(value);
+  }
+
+  public decodeKey(key: string): string {
+    return decodeURIComponent(key);
+  }
+
+  public decodeValue(value: string): string {
+    return decodeURIComponent(value);
+  }
+}
+
+export const PARAM_CODEC = new CustomHttpParamCodec();
