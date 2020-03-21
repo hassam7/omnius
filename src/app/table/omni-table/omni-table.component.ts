@@ -18,7 +18,13 @@ import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
 import { OmniThComponent } from '../omni-th/omni-th.component';
 import { PARAM_CODEC } from '../utils/util';
 import { HttpParams } from '@angular/common/http';
-
+interface IParams {
+  pageSize: number;
+  sortKeys: [];
+  sortValues: [];
+  filterParams: any;
+  searchTerm: string;
+}
 @Component({
   selector: 'omni-table',
   templateUrl: './omni-table.component.html',
@@ -39,7 +45,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   private filter: BehaviorSubject<Array<any> | []>;
   private theadReady: Subject<void> = new Subject();
   private customParams;
-  get params() {
+  get params(): IParams {
     const params: any = {};
     if (this.currentPageSizeAction.value) params.pageSize = this.currentPageSizeAction.value;
 
@@ -171,7 +177,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
   private generateUrLFromParams() {
     let paramsMap = new HttpParams({ encoder: PARAM_CODEC });
-    if (this.params.pageSize) paramsMap = paramsMap.set('pageSize', this.params.pageSize);
+    if (this.params.pageSize) paramsMap = paramsMap.set('pageSize', `${this.params.pageSize}`);
     if (this.params.searchTerm) paramsMap = paramsMap.set('searchTerm', this.params.searchTerm);
     if (this.params.sortKeys && this.params.sortValues) {
       const sortParams = JSON.stringify(
