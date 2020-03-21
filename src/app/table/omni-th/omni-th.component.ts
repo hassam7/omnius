@@ -13,7 +13,7 @@ type ThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
   selector: 'th',
   templateUrl: './omni-th.component.html',
   styleUrls: ['./omni-th.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class OmniThComponent implements OnInit, OnChanges {
   public showFilters = false;
@@ -28,16 +28,14 @@ export class OmniThComponent implements OnInit, OnChanges {
   @Output() readonly filterChange = new EventEmitter<string[]>();
   private sortChangeSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public sortChange$ = this.sortChangeSubject.asObservable();
-  constructor() { }
+  constructor() {}
 
   get filterList(): string[] {
     return this.multipleFilterList.filter(item => item.checked).map(item => item.value);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.multipleFilters && this.multipleFilters) {
-      this.initMultipleFilters();
-    }
+    if (changes.multipleFilters && this.multipleFilters) this.initMultipleFilters();
   }
 
   ngOnInit(): void {
@@ -45,17 +43,11 @@ export class OmniThComponent implements OnInit, OnChanges {
   }
 
   updateSortValue(): void {
-    if (!this.isSortable) {
-      return;
-    }
+    if (!this.isSortable) return;
 
-    if (this.sortDirection === 'asc') {
-      this.setSortValue('dsc');
-    } else if (this.sortDirection === 'dsc') {
-      this.setSortValue(null);
-    } else {
-      this.setSortValue('asc');
-    }
+    if (this.sortDirection === 'asc') this.setSortValue('dsc');
+    else if (this.sortDirection === 'dsc') this.setSortValue(null);
+    else this.setSortValue('asc');
   }
 
   setSortValue(value: 'asc' | 'dsc' | null): void {
@@ -68,9 +60,7 @@ export class OmniThComponent implements OnInit, OnChanges {
     values.forEach(value => {
       // tslint:disable-next-line: triple-equals
       const itemToFind = this.multipleFilterList.find(item => item.value == value);
-      if (itemToFind) {
-        itemToFind.checked = true;
-      }
+      if (itemToFind) itemToFind.checked = true;
     });
     this.filterChange.emit(this.filterList);
   }

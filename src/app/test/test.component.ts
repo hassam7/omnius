@@ -440,10 +440,15 @@ export class TestComponent {
     }
   ];
   public listOfDisplayData = [...this.listOfData];
-  ageFilter = [{ text: 32, value: 32 }, { text: 33, value: 33 }];
-  nameFilter = [{ text: 'John Brown', value: 'John Brown' }, { text: 'Jim Green', value: 'Jim Green'}];
-  constructor(private router: Router) {
-  }
+  ageFilter = [
+    { text: 32, value: 32 },
+    { text: 33, value: 33 }
+  ];
+  nameFilter = [
+    { text: 'John Brown', value: 'John Brown' },
+    { text: 'Jim Green', value: 'Jim Green' }
+  ];
+  constructor(private router: Router) {}
 
   @HostListener('window:click', ['$event'])
   handleClick(e: MouseEvent): void {
