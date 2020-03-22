@@ -14,17 +14,17 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
+import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
 import { OmniThComponent } from '../omni-th/omni-th.component';
 import { PARAM_CODEC } from '../utils/util';
-import { HttpParams } from '@angular/common/http';
 interface IParams {
   pageSize: number;
-  sortKeys: [];
-  sortValues: [];
+  sortKeys: any[] | string;
+  sortValues: any[] | string ;
   filterParams: any;
   searchTerm: string;
 }
@@ -97,13 +97,11 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   }
 
   ngAfterContentInit() {
-    console.log('content inited');
     this.thead.sortChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.sortFilters.next(data);
     });
 
     this.thead.filterChange.pipe(takeUntil(this.destroy$)).subscribe(data => {
-      console.log(data);
       this.filter.next(data);
     });
 
@@ -122,10 +120,10 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     this.destroy$.complete();
   }
 
-  onSearchTermChange(searchTerm) {
+  onSearchTermChange(searchTerm: string) {
     this.searchTerm = searchTerm;
-    this.updateQueryParams();
     this.searchChange.emit(searchTerm);
+    this.updateQueryParams();
   }
 
   onPageSizeChange(pageSize: number) {
@@ -137,7 +135,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     this.updateQueryParams();
   }
 
-  private setParamsToControl(params) {
+  private setParamsToControl(params: IParams) {
     if (params.pageSize) {
       this.currentPageSizeAction.next(params.pageSize);
     }
@@ -195,7 +193,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     if (this.params.searchTerm) paramsMap = paramsMap.set('searchTerm', this.params.searchTerm);
     if (this.params.sortKeys && this.params.sortValues) {
       const sortParams = JSON.stringify(
-        this.params.sortKeys.map((key: string, index: number) => ({ [key]: this.params.sortValues[index] }))
+        (this.params.sortKeys as []).map((key: string, index: number) => ({ [key]: this.params.sortValues[index] }))
       );
       paramsMap = paramsMap.set('sort', sortParams);
     }
