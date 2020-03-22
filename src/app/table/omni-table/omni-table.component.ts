@@ -36,8 +36,8 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   data: { [key: string]: any };
   @Input() tableData: { [key: string]: any };
   @Input() shouldShowPagination = false;
-  @Input() totalItems = 71;
   @Input() shouldShowSearch = true;
+  @Input() totalItems = 71;
   @ContentChild(OmniTheadComponent) thead: OmniTheadComponent;
   @ContentChildren(OmniThComponent, { descendants: true }) listOfThComponents: QueryList<OmniThComponent>;
   public searchTerm: string;

@@ -1,8 +1,9 @@
-<omni-table #basicTable [tableData]="listOfDisplayData">
+<omni-table #basicTable [tableData]="listOfDisplayData" [shouldShowSearch]="shouldShowSearch" [shouldShowPagination]="shouldShowPagination">
   <thead>
     <tr>
       <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
-      <th isSortable="true" [filterName]="'ageFilter'" (filterChange)="onFilterChange($event)" [multipleFilters]="ageFilter" sortKey="age">
+      <th isSortable="true" [filterName]="'ageFilter'" (filterChange)="onFilterChange($event)"
+        [multipleFilters]="ageFilter" sortKey="age">
         Age
       </th>
       <th isSortable="true" sortKey="name" [multipleFilters]="nameFilter" [filterName]="'name'">Name</th>
@@ -21,7 +22,8 @@
           </div>
         </div>
         <ng-template #editTpl>
-          <input #inputField class="edit-text" type="text" [(ngModel)]="data.name" (ngModelChange)="updateTextToUrl(data)" />
+          <input #inputField class="edit-text" type="text" [(ngModel)]="data.name"
+            (ngModelChange)="updateTextToUrl(data)" />
         </ng-template>
       </td>
       <td>{{ data.address }}</td>

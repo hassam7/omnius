@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { OmniTableComponent } from '../table/omni-table/omni-table.component';
+
 import data from '../../assets/data.json';
+import config from '../../assets/table.config.json';
 @Component({
   selector: 'omni-test',
   templateUrl: './test.component.html',
@@ -13,6 +15,10 @@ export class TestComponent {
   @ViewChild(OmniTableComponent, { static: false }) omniTable: OmniTableComponent;
   public readonly listOfData = data;
   public listOfDisplayData = [...this.listOfData];
+
+  public shouldShowSearch = config.shouldShowSearch;
+  public shouldShowPagination = config.shouldShowPagination;
+
   ageFilter = [
     { text: 32, value: 32 },
     { text: 33, value: 33 }

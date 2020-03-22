@@ -1,4 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+import * as config from '../../../assets/table.config.json';
 
 @Component({
   selector: 'omni-pagination',
@@ -6,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./pagination.component.scss']
 })
 export class OmniPaginationComponent {
-  @Input() pageSizes = [5, 10, 25, 50, 100];
+  @Input() pageSizes = config.paginationSizes;
 
   @Input()
   set selectedPageSize(pageSize) {
@@ -34,7 +36,7 @@ export class OmniPaginationComponent {
     return this.currentPageInternal;
   }
   @Output() pageSizeChanged = new EventEmitter();
-  private selectedPageSizeInternal = 25;
+  private selectedPageSizeInternal = config.defaultPageSize;
   private currentPageInternal: number;
 
   get totalNumberOfPages(): number {
