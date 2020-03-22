@@ -13,7 +13,7 @@ export class TestComponent {
   editId: string | null;
   @ViewChild('inputField', { static: false, read: ElementRef }) inputElement: ElementRef;
   @ViewChild(OmniTableComponent, { static: false }) omniTable: OmniTableComponent;
-  public readonly listOfData = data;
+  public readonly listOfData = data; // data retrieved from server
   public listOfDisplayData = [...this.listOfData];
 
   public shouldShowSearch = config.shouldShowSearch;
@@ -47,8 +47,12 @@ export class TestComponent {
     this.omniTable.addToUrlState(`${key};${name}`);
   }
 
+  onSearchChange(term) {
+    console.log('Search Term Change');
+  }
+
   onFilterChange(items) {
-    console.log(items);
+    // console.log(items);
   }
 
   onSortChange(event: { key: string; value: string | null }): void {

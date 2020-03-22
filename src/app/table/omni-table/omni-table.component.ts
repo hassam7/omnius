@@ -10,7 +10,9 @@ import {
   OnDestroy,
   ContentChildren,
   QueryList,
-  ElementRef
+  ElementRef,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OmniTheadComponent } from '../omni-thead/omni-thead.component';
@@ -38,6 +40,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   @Input() shouldShowPagination = false;
   @Input() shouldShowSearch = true;
   @Input() totalItems = 71;
+  @Output() public readonly searchChange = new EventEmitter<string>();
   @ContentChild(OmniTheadComponent) thead: OmniTheadComponent;
   @ContentChildren(OmniThComponent, { descendants: true }) listOfThComponents: QueryList<OmniThComponent>;
   public searchTerm: string;
@@ -122,6 +125,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   onSearchTermChange(searchTerm) {
     this.searchTerm = searchTerm;
     this.updateQueryParams();
+    this.searchChange.emit(searchTerm);
   }
 
   onPageSizeChange(pageSize: number) {

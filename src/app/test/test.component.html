@@ -1,4 +1,5 @@
-<omni-table #basicTable [tableData]="listOfDisplayData" [shouldShowSearch]="shouldShowSearch" [shouldShowPagination]="shouldShowPagination">
+<omni-table #basicTable [tableData]="listOfDisplayData" [shouldShowSearch]="shouldShowSearch"
+  [shouldShowPagination]="shouldShowPagination" (searchChange)="onSearchChange($event)">
   <thead>
     <tr>
       <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
