@@ -3,11 +3,12 @@
   <thead>
     <tr>
       <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
-      <th isSortable="true" [filterName]="'ageFilter'" (filterChange)="onFilterChange($event)"
-        [multipleFilters]="ageFilter" sortKey="age">
+      <th isSortable="true" [filterName]="'ageFilter'" (sortChange)="onSortChange($event)"
+        (filterChange)="onAgeFilterChange($event)" [multipleFilters]="ageFilter" sortKey="age">
         Age
       </th>
-      <th isSortable="true" sortKey="name" [multipleFilters]="nameFilter" [filterName]="'name'">Name</th>
+      <th isSortable="true" sortKey="name" (sortChange)="sortByName($event)" [multipleFilters]="nameFilter"
+        [filterName]="'name'">Name</th>
       <th>Address</th>
       <th>Action</th>
     </tr>

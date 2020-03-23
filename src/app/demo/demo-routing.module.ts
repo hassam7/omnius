@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TestComponent } from './test.component';
+import { DemoComponent } from './demo.component';
 
 
 const routes: Routes = [
-  {path: 'test', component: TestComponent}
+  {path: 'local-data', component: DemoComponent}
 ];
 
 @NgModule({

@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TableModule } from './table/table.module';
-import { TestModule } from './test/test.module';
+import { TestModule } from './demo/demo.module';
 
 @NgModule({
   declarations: [

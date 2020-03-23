@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { TestRoutingModule } from './test-routing.module';
-import { TestComponent } from '../test/test.component';
+import { TestRoutingModule } from './demo-routing.module';
+import { DemoComponent } from './demo.component';
 import { TableModule } from '../table/table.module';
 import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [TestComponent],
+  declarations: [DemoComponent],
   imports: [
     CommonModule,
     TestRoutingModule,

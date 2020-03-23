@@ -6,10 +6,10 @@ import data from '../../assets/data.json';
 import config from '../../assets/table.config.json';
 @Component({
   selector: 'omni-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss']
+  templateUrl: './demo.component.html',
+  styleUrls: ['./demo.component.scss']
 })
-export class TestComponent {
+export class DemoComponent {
   editId: string | null;
   @ViewChild('inputField', { static: false, read: ElementRef }) inputElement: ElementRef;
   @ViewChild(OmniTableComponent, { static: false }) omniTable: OmniTableComponent;
@@ -51,24 +51,39 @@ export class TestComponent {
     console.log('Search Term Change');
   }
 
-  onFilterChange(items) {
-    // console.log(items);
+  onAgeFilterChange(items: number[]) {
+    setTimeout(() => {
+      this.listOfDisplayData = this.listOfData.filter(item => items.includes(item.age));
+      this.listOfDisplayData = this.listOfDisplayData.length ? this.listOfDisplayData : this.listOfData;
+    });
+  }
+
+  sortByName(event: { key: string; value: string | null }): void {
+    const sortField = event.key;
+    const sortDirection = event.value;
+    const dataCopy = [...this.listOfData];
+    if (sortDirection) {
+      this.listOfDisplayData = dataCopy.sort((a, b) => {
+        if (sortDirection === 'asc') return a[sortField].localeCompare(b[sortField]);
+        else if (sortDirection === 'dsc') return b[sortField].localeCompare(a[sortField]);
+      });
+    }
   }
 
   onSortChange(event: { key: string; value: string | null }): void {
-    // const sortField = event.key;
-    // const sortDirection = event.value;
-    // const dataCopy = [...this.listOfData];
-    // if (sortDirection) {
-    //   this.listOfDisplayData = dataCopy.sort((a, b) => {
-    //     if (sortDirection === 'asc') {
-    //       return a[sortField] > b[sortField] ? 1 : -1;
-    //     } else if (sortDirection === 'dsc') {
-    //       return b[sortField] > a[sortField] ? 1 : -1;
-    //     }
-    //   });
-    // } else {
-    //   this.listOfDisplayData = [...this.listOfData];
-    // }
+    const sortField = event.key;
+    const sortDirection = event.value;
+    const dataCopy = [...this.listOfData];
+    if (sortDirection) {
+      this.listOfDisplayData = dataCopy.sort((a, b) => {
+        if (sortDirection === 'asc') {
+          return a[sortField] > b[sortField] ? 1 : -1;
+        } else if (sortDirection === 'dsc') {
+          return b[sortField] > a[sortField] ? 1 : -1;
+        }
+      });
+    } else {
+      this.listOfDisplayData = [...this.listOfData];
+    }
   }
 }
