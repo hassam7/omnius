@@ -1,37 +1,40 @@
-<omni-table #basicTable [tableData]="listOfDisplayData" [shouldShowSearch]="shouldShowSearch"
-  [shouldShowPagination]="shouldShowPagination" (searchChange)="onSearchChange($event)">
-  <thead>
-    <tr>
-      <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
-      <th isSortable="true" [filterName]="'ageFilter'" (sortChange)="onSortChange($event)"
-        (filterChange)="onAgeFilterChange($event)" [multipleFilters]="ageFilter" sortKey="age">
-        Age
-      </th>
-      <th isSortable="true" sortKey="name" (sortChange)="sortByName($event)" [multipleFilters]="nameFilter"
-        [filterName]="'name'">Name</th>
-      <th>Address</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let data of basicTable.data" class="editable-row">
-      <td>{{ data.key }}</td>
-      <td>{{ data.age }}</td>
-      <td>
-        <div class="editable-cell" *ngIf="editId !== data.key; else editTpl">
-          <div class="editable-cell-value-wrap" (click)="startEdit(data.key, $event)">
-            {{ data.name }}
+<div class="container">
+  <omni-table #basicTable [tableData]="listOfDisplayData" [totalItems]="listOfDisplayData.length" [shouldShowSearch]="shouldShowSearch"
+    [shouldShowPagination]="shouldShowPagination" (searchChange)="onSearchChange($event)"
+    (pageChanged)="onPageChanged($event)">
+    <thead>
+      <tr>
+        <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
+        <th isSortable="true" [filterName]="'ageFilter'" (sortChange)="onSortChange($event)"
+          (filterChange)="onAgeFilterChange($event)" [multipleFilters]="ageFilter" sortKey="age">
+          Age
+        </th>
+        <th isSortable="true" sortKey="name" (sortChange)="sortByName($event)" [multipleFilters]="nameFilter"
+          [filterName]="'name'">Name</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data" class="editable-row">
+        <td>{{ data.key }}</td>
+        <td>{{ data.age }}</td>
+        <td>
+          <div class="editable-cell" *ngIf="editId !== data.key; else editTpl">
+            <div class="editable-cell-value-wrap" (click)="startEdit(data.key, $event)">
+              {{ data.name }}
+            </div>
           </div>
-        </div>
-        <ng-template #editTpl>
-          <input #inputField class="edit-text" type="text" [(ngModel)]="data.name"
-            (ngModelChange)="updateTextToUrl(data)" />
-        </ng-template>
-      </td>
-      <td>{{ data.address }}</td>
-      <td>
-        <div [omniMapTypeToHtmlControlMapTypeToHtmlControl]="false"></div>
-      </td>
-    </tr>
-  </tbody>
-</omni-table>
+          <ng-template #editTpl>
+            <input #inputField class="edit-text" type="text" [(ngModel)]="data.name"
+              (ngModelChange)="updateTextToUrl(data)" />
+          </ng-template>
+        </td>
+        <td>{{ data.address }}</td>
+        <td>
+          <div [omniMapTypeToHtmlControlMapTypeToHtmlControl]="false"></div>
+        </td>
+      </tr>
+    </tbody>
+  </omni-table>
+</div>
