@@ -41,6 +41,7 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
   @Input() shouldShowSearch = true;
   @Input() totalItems = 71;
   @Output() public readonly searchChange = new EventEmitter<string>();
+  @Output() public readonly pageChanged = new EventEmitter<string>();
   @ContentChild(OmniTheadComponent) thead: OmniTheadComponent;
   @ContentChildren(OmniThComponent, { descendants: true }) listOfThComponents: QueryList<OmniThComponent>;
   public searchTerm: string;
@@ -120,6 +121,10 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
     this.destroy$.complete();
   }
 
+  onPageChanged(page) {
+    this.pageChanged.emit(page);
+  }
+
   onSearchTermChange(searchTerm: string) {
     this.searchTerm = searchTerm;
     this.searchChange.emit(searchTerm);
@@ -165,12 +170,13 @@ export class OmniTableComponent implements OnInit, OnChanges, AfterContentInit, 
 
     if (params?.searchTerm?.trim()?.length) {
       this.searchTerm = params.searchTerm;
+      this.searchChange.emit(this.searchTerm);
     }
   }
 
   private updateQueryParams() {
     this.router.navigate(['.', this.params]);
-    console.log(this.generateUrLFromParams());
+    // console.log(this.generateUrLFromParams());
   }
 
   private initFilterStreams() {

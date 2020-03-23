@@ -35,7 +35,9 @@ export class OmniPaginationComponent {
   get currentPage(): number {
     return this.currentPageInternal;
   }
-  @Output() pageSizeChanged = new EventEmitter();
+  @Output() public readonly pageSizeChanged = new EventEmitter();
+  @Output() public readonly pageChanged = new EventEmitter();
+
   private selectedPageSizeInternal = config.defaultPageSize;
   private currentPageInternal: number;
 
@@ -58,11 +60,11 @@ export class OmniPaginationComponent {
 
   nextPage() {
     this.currentPage++;
-    // console.log(this.startIndex, this.endIndex);
+    this.pageChanged.emit({start: this.startIndex, end: this.endIndex});
   }
 
   previousPage() {
     this.currentPage--;
-    // console.log(this.startIndex, this.endIndex);
+    this.pageChanged.emit({start: this.startIndex, end: this.endIndex});
   }
 }
