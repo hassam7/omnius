@@ -1,7 +1,6 @@
 <div class="container">
   <omni-table #basicTable [tableData]="listOfDisplayData" [totalItems]="listOfDisplayData.length" [shouldShowSearch]="shouldShowSearch"
-    [shouldShowPagination]="shouldShowPagination" (searchChange)="onSearchChange($event)"
-    (pageChanged)="onPageChanged($event)">
+    [shouldShowPagination]="shouldShowPagination" (searchChange)="onSearchChange($event)">
     <thead>
       <tr>
         <th isSortable="true" sortKey="key" (sortChange)="onSortChange($event)">Key</th>
